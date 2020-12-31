@@ -2,6 +2,7 @@ package com.search.analytics.anagram;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,27 +17,29 @@ public class GroupAnagram {
 	 * if it is not present make a new list and insert the value
 	 */
 
-	public static void groupAnagramsTogether(String[] anagramStrings) {
+	public Collection<List<String>> groupAnagramsTogether(String[] anagramStrings) {
 		List<String> anagramList = Arrays.stream(anagramStrings).collect(Collectors.toList());
 		Map<String, List<String>> valueMap = new HashMap<>();
 
 		for (int i = 0; i < anagramList.size(); i++) {
+			if (anagramList.get(i) != null) {
 
-			char[] charArray = anagramList.get(i).toCharArray();
-			Arrays.sort(charArray);
-			String key = new String(charArray);
+				char[] charArray = anagramList.get(i).toCharArray();
+				Arrays.sort(charArray);
+				String key = new String(charArray);
 
-			valueMap.putIfAbsent(key, new ArrayList<>());
-			valueMap.get(key).add(anagramList.get(i));
+				valueMap.putIfAbsent(key, new ArrayList<>());
+				valueMap.get(key).add(anagramList.get(i));
+			}
 		}
-		
-		valueMap.values().stream().forEach(System.out::println);
+		return valueMap.values();
 	}
 
 	public static void main(String[] args) {
 
-		String[] testStrings = { "CAT","DOG", "TAC", "MAD", "DAM", "AMD", "GOD", "SET" };
-		groupAnagramsTogether(testStrings);
+		String[] testStrings = { "CAT","DOG","TAC", "MAD", "DAM", "AMD", "GOD", "SET" };
+		Collection<List<String>> result = new GroupAnagram().groupAnagramsTogether(testStrings);
+		result.forEach(System.out::print);
 
 	}
 }
